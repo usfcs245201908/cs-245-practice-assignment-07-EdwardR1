@@ -6,13 +6,13 @@ public class LinkedList<T> implements List<T> {
         head = null;
         size = 0;
     }
-    public void add(int pos, T item){
+    public void add(int pos, Object item) throws IndexOutOfBoundsException{
         if(pos > size || pos < 0){
-
+            throw new IndexOutOfBoundsException();
         }
         if(pos == 0){
             Node<T> current = new Node<T>(item);
-            current.next = head;
+            current.setNext(head);
             head = current;
             ++size;
         }
@@ -20,15 +20,15 @@ public class LinkedList<T> implements List<T> {
             Node<T> current = new Node<T>(item);
             Node<T> prev =head;
             for(int i=0; i<pos-1; i++){
-                prev = prev.next;
+                prev = prev.getNext();
             }
-            current.next = prev.next;
-            prev.next = current;
+            current.setNext(prev.getNext());
+            prev.setNext(current);
             ++size;
         }
     }
 
-    public void add(T item){
+    public void add(Object item){
         if(head == null){
             head = new Node<T>(item);
             ++size;
@@ -36,10 +36,10 @@ public class LinkedList<T> implements List<T> {
         else {
             Node<T> prev = head;
             while(prev.next != null){
-                prev = prev.next;
+                prev = prev.getNext();
             }
             Node<T> curr = new Node<T>(item);
-            prev.next = curr;
+            prev.setNext(curr);
             ++size;
         }
     }
@@ -49,9 +49,9 @@ public class LinkedList<T> implements List<T> {
         }
         Node<T> prev = head;
         for(int i=0; i<pos; i++){
-            prev = prev.next;
+            prev = prev.getNext();
         }
-        return prev.data;
+        return prev.getData();
     }
 
     public T remove(int pos) throws IndexOutOfBoundsException {
@@ -59,19 +59,18 @@ public class LinkedList<T> implements List<T> {
             throw new IndexOutOfBoundsException();
         }
         if(pos == 0){
-            T item = head.data;
-            head = head.next;
+            T item = head.getData();
+            head = head.getNext();
             size--;
             return item;
         }
         else {
             Node<T> prev = head;
-            Node<T> current = prev;
             for(int i=0; i<pos-1; i++){
-                prev = prev.next;
+                prev = prev.getNext();
             }
-            Node<T> curr = prev.next;
-            T item = curr.data;
+            Node<T> current = prev.getNext();
+            T item = current.getData();
             size--;
             return item;
         }
@@ -79,141 +78,5 @@ public class LinkedList<T> implements List<T> {
     public int size(){
         return size;
     }
-    // Node<T> head;
-    // int size;
-
-    // public LinkedList() {
-    //     head = null;
-    //     size = 0;
-    // }
-
-    // public void add(Object item) {
-    //     if(head == null){
-    //         head = new Node<T>(item);
-    //         ++size;
-    //     }
-    //     else {
-    //         Node<T> prev = head;
-    //         while(prev.next != null){
-    //             prev = prev.next;
-    //         }
-    //         Node<T> curr = new Node<T>(item);
-    //         prev.next = curr;
-    //         ++size;
-    //     }
-    //     // if (head == null) {
-    //     //     // Node<T> current = new Node<T>(item);
-    //     //     // head = current;
-    //     //     head = new Node<T>(item);
-    //     //     size++;
-    //     // } else {
-    //     //     Node<T> prev = head;
-    //     //     while (prev.next != null) {
-    //     //         prev = prev.next;
-    //     //     }
-    //     //     Node<T> current = new Node<T>(item);
-    //     //     prev.next = current;
-    //     //     size++;
-    //     // }
-
-    // }
-
-    // public void add(int pos, Object item) {
-    //     if(pos > size || pos < 0){
-    //         // throw new IndexOutOfBoundsException();
-    //     }
-    //     if(pos == 0){
-    //         Node<T> current = new Node<T>(item);
-    //         current.next = head;
-    //         head = current;
-    //         ++size;
-    //     }
-    //     else {
-            
-    //         Node<T> current = new Node<T>(item);
-    //         Node<T> prev = head;
-    //         for(int i=0; i<pos-1; i++){
-    //             prev = prev.next;
-    //         }
-    //         current.next = prev.next;
-    //         prev.next = current;
-    //         ++size;
-    //     }
-    //     // if (pos > size || pos < 0) {
-    //     //     // throw new IndexOutOfBoundsException();
-    //     // }
-    //     // if (pos == 0) {
-    //     //     Node<T> current = new Node<T>(item);
-    //     //     current.setNext(head);
-    //     //     head = current;
-    //     //     size++;
-    //     // } else {
-    //     //     Node<T> current = new Node<T>(item);
-    //     //     Node<T> prev = head;
-    //     //     for (int i = 0; i < pos-1; i++) {
-    //     //         prev = prev.getNext();
-    //     //     }
-    //     //     current.setNext(prev.getNext());
-    //     //     prev.setNext(current);
-    //     //     size++;
-    //     // }
-    // }
-
-    // public T get(int pos) throws IndexOutOfBoundsException {
-    //     if (pos > size - 1 || pos < 0) {
-    //         throw new IndexOutOfBoundsException("Get failed, index out of bounds!");
-    //     }
-    //     Node<T> prev = head;
-    //     for(int i=0; i<pos; i++){
-    //         prev = prev.getNext();
-    //     }
-    //     return prev.getData();
-    //     // Node<T> temp = head;
-    //     // for (int i = 0; i < pos; i++) {
-    //     //     temp = temp.getNext();
-    //     // }
-    //     // return temp.getData();
-    // }
-
-    // public T remove(int pos) throws IndexOutOfBoundsException {
-    //     if (pos > size - 1 || pos < 0) {
-    //         throw new IndexOutOfBoundsException("Removal failed, index out of bounds!");
-    //     }
-    //     if(pos == 0){
-    //         T item = (T) head.getData();
-    //         head = head.next;
-    //         size++;
-    //         return item;
-    //     }
-    //     else {
-    //         Node<T> prev = head;
-    //         Node<T> current = prev;
-    //         for(int i=0; i<pos - 1; i++){
-    //             prev = prev.getNext();
-    //         }
-    //         Node<T> curr = prev.getNext();
-    //         T item = (T) curr.getData();
-    //         size--;
-    //         return item;
-    //     }
-    //     // if (pos == 0) {
-    //     //     Node<T> temp = head;
-    //     //     head = head.getNext();
-    //     //     size--;
-    //     //     return temp.getData();
-    //     // } else {
-    //     //     Node<T> prev = head;
-    //     //     Node<T> temp = prev.getNext();
-    //     //     for (int i = 0; i < pos; i++) {
-    //     //         temp = prev.getNext();
-    //     //         prev.setNext(temp.getNext());
-    //     //     }
-    //     //     size--;
-    //     //     return temp.getData();
-    //     // }
-    // }
-         
-    // public int size() {
-    //     return size;
-    // }
+   
 }
